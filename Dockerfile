@@ -14,10 +14,9 @@ COPY . /var/www/html
 
 RUN composer install --optimize-autoloader --no-dev
 
-RUN chown -R 1000:www-data storage bootstrap/cache
-RUN chown -R 1000:www-data /var/www/html/storage/framework
+RUN chown -R 1000:www-data /var/www/html
 
-RUN chmod -R ug+rwx storage bootstrap/cache
+RUN chmod -R ug+rwx /var/www/html
 
 #RUN chmod -R 777 /var/www/html/storage  \
 #    /var/www/html/bootstrap/cache
