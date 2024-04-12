@@ -1,4 +1,4 @@
-FROM php:8.2-fpm
+FROM php:8.3-fpm
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -18,5 +18,3 @@ RUN chmod -R gu+w storage
 
 RUN chmod -R guo+w storage
 
-#RUN chmod -R 777 /var/www/html/storage  \
-#    /var/www/html/bootstrap/cache
