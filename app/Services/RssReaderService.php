@@ -39,6 +39,20 @@ class RssReaderService
         }
     }
 
+    public function getFeed(string $url): void
+    {
+        /** @mixin SimplePie */
+        $feed = FeedReader::read($url);
+
+        foreach ($feed->get_items(0, $feed->get_item_quantity()) as $item) {
+            $title = $this->cleanedString($item->get_title());
+            $description = $this->cleanedString($item->get_description());
+            var_dump($title);
+            $trigramTitle = $this->tokenizeItem($title);
+            $trigramDescription = $this->tokenizeItem($description);
+        }
+    }
+
     private function tokenizeItem(?string $item): array
     {
         if ($item === null) {
@@ -59,8 +73,8 @@ class RssReaderService
         }
 
         return preg_replace(
-            '/<[^>]*>|^\s*|\s*$|📌|📄|📢|👉|=/mu',
-            '',
+            '/<[^>]*>|\s+|📌|📄|📢|👉|\xc2\xa0|[[:punct:]]|[[:cntrl:]]/u',
+            ' ',
             trim($string),
         );
     }
