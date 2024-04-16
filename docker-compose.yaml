@@ -5,13 +5,14 @@ networks:
     name: generator-app-network
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    container_name: generator-news
+    image: generator-app
+    command: /opt/init-tasks.sh
     ports:
       - "9000:9000"
     volumes:
       - .:/var/www/html
+      - ./provisioning/supervisor.d:/etc/supervisor.d:ro
     networks:
       - generator-app-network
     env_file:

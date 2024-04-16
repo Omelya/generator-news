@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y \
     git \
     unzip \
     libpq-dev \
+    supervisor \
     && docker-php-ext-install pdo pdo_pgsql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -17,4 +18,9 @@ RUN composer install --optimize-autoloader --no-dev
 RUN chmod -R gu+w storage
 
 RUN chmod -R guo+w storage
+
+COPY provisioning/supervisor.d /etc/supervisor/conf.d
+
+COPY provisioning/init-tasks.sh /opt/init-tasks.sh
+RUN chmod +x /opt/init-tasks.sh
 
