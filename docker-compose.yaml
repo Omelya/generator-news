@@ -7,14 +7,38 @@ services:
   app:
     container_name: generator-news
     image: generator-app
-    command: /opt/init-tasks.sh
     ports:
       - "9000:9000"
     volumes:
       - .:/var/www/html
-      - ./provisioning/supervisor.d:/etc/supervisor.d:ro
     networks:
       - generator-app-network
+    env_file:
+      - provisioning/.env
+    depends_on:
+      - init-app
+  init-app:
+    container_name: generator-news-init
+    image: generator-app
+    volumes:
+      - .:/var/www/html
+    networks:
+      - generator-app-network
+    command: /opt/init-tasks.sh
+    env_file:
+      - provisioning/.env
+    depends_on:
+      - postgres
+  tasks:
+    container_name: generator-news-tasks
+    image: generator-app
+    restart: always
+    volumes:
+      - .:/var/www/html
+      - ./provisioning/supervisor.d:/etc/supervisor/conf.d/:ro
+    networks:
+      - generator-app-network
+    command: /opt/tasks.sh
     env_file:
       - provisioning/.env
     depends_on:
