@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\News;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class CsvServices
@@ -19,7 +18,11 @@ class CsvServices
     {
         $csv = fopen($this->fileName, 'w+');
 
-        foreach (News::lazy() as $item)
+        $date = date('Y-m-d 00:00:00', strtotime('-1 day'));
+
+        $news = News::where('created_at', '>=', $date)->lazy();
+
+        foreach ($news as $item)
         {
             fputcsv($csv, ["$item->title $item->description"]);
         }
