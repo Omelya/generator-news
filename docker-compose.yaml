@@ -60,6 +60,13 @@ services:
       - /etc/localtime:/etc/localtime:ro
     networks:
       - generator-app-network
+  redis:
+    container_name: generator-redis
+    image: bitnami/redis:latest
+    env_file:
+      - provisioning/.docker-compose.env
+    networks:
+      - generator-app-network
   nginx:
     container_name: generator-nginx
     image: nginx:alpine

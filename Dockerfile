@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     cron \
     && cp /usr/share/zoneinfo/${TZ} /etc/localtime \
+    && pecl install redis \
     && docker-php-ext-install pdo pdo_pgsql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
